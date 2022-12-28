@@ -24,10 +24,11 @@ import javax.swing.JTextField;
 
 import clientUtils.DataFile;
 import clientUtils.FileUtils;
+import server.FileHandle;
 
 public class ClientFrame extends JFrame implements ActionListener, ISocketListener {
 	JTextField ipInput, portInput, searchInput;
-	JButton connectButton, disconnectButton, searchButton, downLoadFile, uploadFileButton;
+	JButton connectButton, disconnectButton, searchButton, downLoadFile, uploadFileButton, deleteFileButton;
 	JProgressBar jb;
 	JList<String> list;
 	ClientSocketThread clientSocketThread = null;
@@ -86,15 +87,20 @@ public class ClientFrame extends JFrame implements ActionListener, ISocketListen
 		this.add(img);
 		// JB
 		downLoadFile = new JButton();
-		downLoadFile.setBounds(130, 60, 50, 50);
+		downLoadFile.setBounds(80, 60, 50, 50);
 
 		this.add(downLoadFile);
 
 		uploadFileButton = new JButton();
-		uploadFileButton.setBounds(235, 60, 50, 50);
+		uploadFileButton.setBounds(180, 60, 50, 50);
 
 		this.add(uploadFileButton);
 
+		deleteFileButton = new JButton();
+		deleteFileButton.setBounds(280, 60, 50, 50);
+		
+		this.add(deleteFileButton);
+		
 		jb = new JProgressBar(0, 100);
 		jb.setBounds(50, 130, 260, 25);
 		jb.setValue(48);
@@ -106,6 +112,7 @@ public class ClientFrame extends JFrame implements ActionListener, ISocketListen
 		searchButton.addActionListener(this);
 		downLoadFile.addActionListener(this);
 		uploadFileButton.addActionListener(this);
+		deleteFileButton.addActionListener(this);
 		disconnectButton.addActionListener(this);
 
 		setupIcon(downLoadFile, "download");
@@ -113,6 +120,7 @@ public class ClientFrame extends JFrame implements ActionListener, ISocketListen
 		setupIcon(uploadFileButton, "up");
 		setupIcon(disconnectButton, "disconnect");
 		setupIcon(img, "img");
+		setupIcon(deleteFileButton, "delete");
 		// setting Frame
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -152,7 +160,6 @@ public class ClientFrame extends JFrame implements ActionListener, ISocketListen
 		} else if (e.getSource() == downLoadFile) {
 			if (list.getSelectedIndex() != -1) {
 				String str = list.getSelectedValue();
-				List<String> lists = list.getSelectedValuesList();
 				clientSocketThread.sendString("DOWNLOAD_FILE" + "--" + str);
 			}
 		} else if (e.getSource() == uploadFileButton) {
@@ -163,6 +170,12 @@ public class ClientFrame extends JFrame implements ActionListener, ISocketListen
 				String filePath = fileToSave.getPath();
 				clientSocketThread.sendFile(filePath);
 			}
+		} else if (e.getSource() == deleteFileButton) {
+			if(list.getSelectedIndex() != 1) {
+				String str = list.getSelectedValue();
+				clientSocketThread.sendString("DELETE_FILE"+ "--"+ str);
+			}
+			
 		}
 	}
 

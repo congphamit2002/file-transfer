@@ -53,7 +53,6 @@ public class ClientSocketThread extends Thread {
 			SendDataThread sendDataThread = new SendDataThread();
 			sendDataThread.start();
 		} catch (Exception e) {
-			// TODO: handle exception
 			// clientHelper.connectFail();
 			System.out.println("Can't connect to server");
 			iSocketListener.showDialog("Can't connect to Server", "ERROR");

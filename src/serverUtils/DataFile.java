@@ -26,7 +26,6 @@ public class DataFile implements Serializable {
 	}
 
 	public DataFile(String fileName) throws IOException {
-		File file = new File(fileName);
 		data = Files.readAllBytes(Paths.get(fileName));
 		System.out.println(data);
 	}
