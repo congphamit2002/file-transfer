@@ -111,6 +111,9 @@ public class ServerHandler extends Thread {
 		} else if (str.contains("DOWNLOAD_FILE")) {
 			String[] array = str.split("--");
 			sendFile(array[1]);
+		} else if (str.contains("DELETE_FILE")) { // delete
+			String[] array = str.split("--");
+			deleteFile(array[1]);
 		} else if (str.contains("START_SEND_FILE")) {
 			this.sendType = SEND_TYPE.START_SEND_FILE;
 		} else if (str.contains("SEND_FILE")) {
@@ -210,7 +213,15 @@ public class ServerHandler extends Thread {
 		System.out.println("SENDING FILE	");
 		sendType = SEND_TYPE.SEND_FILE;
 		this.fileName = fileName;
-
+	}
+	
+	void deleteFile(String fileName) { 
+		File file = new File(FileHandle.URL_FOLDER+"\\"+fileName);
+		if(file.delete()) {
+			System.out.println("Deleted the file: "+fileName);
+		} else {
+			System.out.println("Failed to delete the file: "+fileName);
+		}
 	}
 
 	// void send Message
